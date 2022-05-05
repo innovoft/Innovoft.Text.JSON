@@ -58,6 +58,11 @@ namespace Innovoft.Text.JSON
 			}
 		}
 
+		public Utf8JsonReader Create()
+		{
+			return new Utf8JsonReader();
+		}
+
 		public bool Read(ref Utf8JsonReader reader)
 		{
 			if (reader.Read())
