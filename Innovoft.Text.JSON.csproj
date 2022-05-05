@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+		<Version>1.0.0</Version>
+		<PackageId>Innovoft.Text.JSON</PackageId>
+		<Title>Innovoft.Text.JSON</Title>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/innovoft/Innovoft.Text.JSON</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>json efficincy efficient efficient-algorithm</PackageTags>
+		<Authors>Steven Retz</Authors>
+		<Company>Innovoft</Company>
+		<Copyright>Copyright © Innovoft 2021</Copyright>
+		<Description></Description>
+		<PackageProjectUrl>https://github.com/innovoft/Innovoft.Text.JSON</PackageProjectUrl>
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>
