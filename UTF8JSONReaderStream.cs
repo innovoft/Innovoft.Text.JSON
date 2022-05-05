@@ -10,19 +10,22 @@ namespace Innovoft.Text.JSON
 	{
 		#region Fields
 		private readonly Stream stream;
+		private readonly byte[] buffer;
 		private readonly bool dispose;
 		#endregion //Fields
 
 		#region Constructors
-		public UTF8JSONReaderStream(Stream stream)
+		public UTF8JSONReaderStream(Stream stream, byte[] buffer)
 		{
 			this.stream = stream;
+			this.buffer = buffer;
 			this.dispose = true;
 		}
 
-		public UTF8JSONReaderStream(Stream stream, bool dispose)
+		public UTF8JSONReaderStream(Stream stream, byte[] buffer, bool dispose)
 		{
 			this.stream = stream;
+			this.buffer= buffer;
 			this.dispose = dispose;
 		}
 		#endregion //Constructors
@@ -36,6 +39,7 @@ namespace Innovoft.Text.JSON
 
 		#region Properties
 		public Stream Stream => stream;
+		public byte[] Buffer => buffer;
 		#endregion //Properties
 
 		#region Methods
