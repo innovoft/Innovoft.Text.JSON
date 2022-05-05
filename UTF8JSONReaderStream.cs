@@ -12,6 +12,8 @@ namespace Innovoft.Text.JSON
 		private readonly Stream stream;
 		private readonly byte[] buffer;
 		private readonly bool dispose;
+
+		private int count;
 		#endregion //Fields
 
 		#region Constructors
@@ -64,7 +66,8 @@ namespace Innovoft.Text.JSON
 
 		public Utf8JsonReader Create()
 		{
-			return new Utf8JsonReader();
+			count = stream.Read(buffer, 0, buffer.Length);
+			return new Utf8JsonReader(new ReadOnlySpan<byte>(buffer, 0, count), count > 0, new JsonReaderState());
 		}
 
 		public bool Read(ref Utf8JsonReader reader)
@@ -73,12 +76,24 @@ namespace Innovoft.Text.JSON
 			{
 				return true;
 			}
-
-			var state = reader.CurrentState;
-
-			//TODO: Read more data
-
-			reader = new Utf8JsonReader();
+			int offset;
+			var consumed = (int)reader.BytesConsumed;
+			if (consumed < count)
+			{
+				offset = consumed - count;
+				System.Buffer.BlockCopy(buffer, consumed, buffer, 0, offset);
+			}
+			else
+			{
+				offset = 0;
+			}
+			var read = stream.Read(buffer, offset, buffer.Length - offset);
+			if (read <= 0)
+			{
+				return false;
+			}
+			count = offset + read;
+			reader = new Utf8JsonReader(new ReadOnlySpan<byte>(buffer, 0, count), read > 0, reader.CurrentState);
 			return reader.Read();
 		}
 		#endregion //Methods
