@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Text.Json;
 
 namespace Innovoft.Text.JSON
 {
@@ -67,6 +68,21 @@ namespace Innovoft.Text.JSON
 			}
 
 			dispose?.Invoke();
+		}
+
+		public bool Read(ref Utf8JsonReader reader)
+		{
+			if (reader.Read())
+			{
+				return true;
+			}
+
+			var state = reader.CurrentState;
+
+			//TODO: Read more data
+
+			reader = new Utf8JsonReader();
+			return reader.Read();
 		}
 		#endregion //Methods
 	}
