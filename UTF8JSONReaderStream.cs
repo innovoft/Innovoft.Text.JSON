@@ -10,20 +10,20 @@ namespace Innovoft.Text.JSON
 	{
 		#region Fields
 		private readonly Stream stream;
-		private readonly bool streamDispose;
+		private readonly bool dispose;
 		#endregion //Fields
 
 		#region Constructors
 		public UTF8JSONReaderStream(Stream stream)
 		{
 			this.stream = stream;
-			this.streamDispose = true;
+			this.dispose = true;
 		}
 
-		public UTF8JSONReaderStream(Stream stream, bool streamDispose)
+		public UTF8JSONReaderStream(Stream stream, bool dispose)
 		{
 			this.stream = stream;
-			this.streamDispose = streamDispose;
+			this.dispose = dispose;
 		}
 		#endregion //Constructors
 
@@ -52,7 +52,7 @@ namespace Innovoft.Text.JSON
 				return;
 			}
 
-			if (streamDispose)
+			if (dispose)
 			{
 				stream.Dispose();
 			}
