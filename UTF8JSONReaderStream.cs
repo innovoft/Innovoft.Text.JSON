@@ -96,6 +96,34 @@ namespace Innovoft.Text.JSON
 			reader = new Utf8JsonReader(new ReadOnlySpan<byte>(buffer, 0, count), read <= 0, reader.CurrentState);
 			return reader.Read();
 		}
+
+		public void Skip(ref Utf8JsonReader reader)
+		{
+			if (reader.TokenType == JsonTokenType.PropertyName)
+			{
+				if (!Read(ref reader))
+				{
+					throw new EndOfStreamException();
+				}
+			}
+
+			if (reader.TokenType == JsonTokenType.StartObject ||
+				reader.TokenType == JsonTokenType.EndObject)
+			{
+				var depth = reader.CurrentDepth;
+				while (true)
+				{
+					if (!Read(ref reader))
+					{
+						throw new EndOfStreamException();
+					}
+					if (reader.CurrentDepth == depth)
+					{
+						return;
+					}
+				}
+			}
+		}
 		#endregion //Methods
 	}
 }
