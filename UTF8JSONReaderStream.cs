@@ -107,20 +107,22 @@ namespace Innovoft.Text.JSON
 				}
 			}
 
-			if (reader.TokenType == JsonTokenType.StartObject ||
-				reader.TokenType == JsonTokenType.EndObject)
+			if (reader.TokenType != JsonTokenType.StartObject &&
+				reader.TokenType != JsonTokenType.EndObject)
 			{
-				var depth = reader.CurrentDepth;
-				while (true)
+				return;
+			}
+
+			var depth = reader.CurrentDepth;
+			while (true)
+			{
+				if (!Read(ref reader))
 				{
-					if (!Read(ref reader))
-					{
-						throw new EndOfStreamException();
-					}
-					if (reader.CurrentDepth == depth)
-					{
-						return;
-					}
+					throw new EndOfStreamException();
+				}
+				if (reader.CurrentDepth == depth)
+				{
+					return;
 				}
 			}
 		}
