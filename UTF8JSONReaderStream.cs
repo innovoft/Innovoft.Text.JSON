@@ -80,7 +80,7 @@ namespace Innovoft.Text.JSON
 			var consumed = (int)reader.BytesConsumed;
 			if (consumed < count)
 			{
-				offset = consumed - count;
+				offset = count - consumed;
 				System.Buffer.BlockCopy(buffer, consumed, buffer, 0, offset);
 			}
 			else
