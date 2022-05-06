@@ -135,25 +135,23 @@ namespace Innovoft.Text.JSON
 				}
 			}
 
-			if (reader.TokenType == JsonTokenType.StartObject ||
-				reader.TokenType == JsonTokenType.EndObject)
-			{
-				var depth = reader.CurrentDepth;
-				while (true)
-				{
-					if (!Read(ref reader))
-					{
-						return false;
-					}
-					if (reader.CurrentDepth == depth)
-					{
-						return true;
-					}
-				}
-			}
-			else
+			if (reader.TokenType != JsonTokenType.StartObject &&
+				reader.TokenType != JsonTokenType.EndObject)
 			{
 				return true;
+			}
+
+			var depth = reader.CurrentDepth;
+			while (true)
+			{
+				if (!Read(ref reader))
+				{
+					return false;
+				}
+				if (reader.CurrentDepth == depth)
+				{
+					return true;
+				}
 			}
 		}
 		#endregion //Methods
