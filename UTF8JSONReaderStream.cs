@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Buffers.Text;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -95,6 +96,25 @@ namespace Innovoft.Text.JSON
 			count = offset + read;
 			reader = new Utf8JsonReader(new ReadOnlySpan<byte>(buffer, 0, count), read <= 0, reader.CurrentState);
 			return reader.Read();
+		}
+
+		public double GetDouble(ref Utf8JsonReader reader)
+		{
+			switch (reader.TokenType)
+			{
+			case JsonTokenType.String:
+				if (!Utf8Parser.TryParse(reader.ValueSpan, out double value, out var consumed))
+				{
+					throw new FormatException();
+				}
+				return value;
+
+			case JsonTokenType.Number:
+				return reader.GetDouble();
+
+			default:
+				throw new FormatException();
+			}
 		}
 
 		public void Skip(ref Utf8JsonReader reader)
