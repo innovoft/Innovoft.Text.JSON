@@ -128,7 +128,8 @@ namespace Innovoft.Text.JSON
 				return reader.TryGetDouble(out value);
 
 			default:
-				throw new FormatException();
+				value = default;
+				return false;
 			}
 		}
 
