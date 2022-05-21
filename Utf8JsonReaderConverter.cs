@@ -109,6 +109,36 @@ namespace Innovoft.Text.JSON
 				}
 			}
 		}
+
+		public static bool TrySkip(ref Utf8JsonReader reader)
+		{
+			if (reader.TokenType == JsonTokenType.PropertyName)
+			{
+				if (!reader.Read())
+				{
+					return false;
+				}
+			}
+
+			if (reader.TokenType != JsonTokenType.StartObject &&
+				reader.TokenType != JsonTokenType.EndObject)
+			{
+				return true;
+			}
+
+			var depth = reader.CurrentDepth;
+			while (true)
+			{
+				if (!reader.Read())
+				{
+					return false;
+				}
+				if (reader.CurrentDepth == depth)
+				{
+					return true;
+				}
+			}
+		}
 		#endregion //Methods
 	}
 }
