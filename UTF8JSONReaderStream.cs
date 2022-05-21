@@ -109,6 +109,40 @@ namespace Innovoft.Text.JSON
 			return reader.Read();
 		}
 
+		public bool StartRead(ref Utf8JsonReader reader)
+		{
+			return reader.Read();
+		}
+
+		public IAsyncResult BeginRead(ref Utf8JsonReader reader, AsyncCallback? callback, object state)
+		{
+			int offset;
+			var consumed = (int)reader.BytesConsumed;
+			if (consumed < count)
+			{
+				offset = count - consumed;
+				System.Buffer.BlockCopy(buffer, consumed, buffer, 0, offset);
+			}
+			else
+			{
+				offset = 0;
+			}
+			return stream.BeginRead(buffer, offset, buffer.Length - offset, callback, state);
+		}
+
+		public bool EndRead(ref Utf8JsonReader reader, IAsyncResult asyncResult)
+		{
+			var read = stream.EndRead(asyncResult);
+			if (read <= 0)
+			{
+				return false;
+			}
+			var offset = count - (int)reader.BytesConsumed;
+			count = offset + read;
+			reader = new Utf8JsonReader(new ReadOnlySpan<byte>(buffer, 0, count), read <= 0, reader.CurrentState);
+			return reader.Read();
+		}
+
 		public double GetDouble(ref Utf8JsonReader reader)
 		{
 			switch (reader.TokenType)
