@@ -86,6 +86,25 @@ namespace Innovoft.Text.JSON
 			}
 		}
 
+		public static long GetInt64(ref Utf8JsonReader reader)
+		{
+			switch (reader.TokenType)
+			{
+			case JsonTokenType.String:
+				if (!Utf8Parser.TryParse(reader.ValueSpan, out long value, out var consumed))
+				{
+					throw new FormatException();
+				}
+				return value;
+
+			case JsonTokenType.Number:
+				return reader.GetInt64();
+
+			default:
+				throw new FormatException();
+			}
+		}
+
 		public static bool TryGetDecimal(ref Utf8JsonReader reader, out decimal value)
 		{
 			switch (reader.TokenType)
