@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Buffers.Text;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Text.Json;
 
@@ -76,6 +77,36 @@ namespace Innovoft.Text.JSON
 			default:
 				value = default;
 				return false;
+			}
+		}
+
+		public static void Skip(ref Utf8JsonReader reader)
+		{
+			if (reader.TokenType == JsonTokenType.PropertyName)
+			{
+				if (!reader.Read())
+				{
+					throw new EndOfStreamException();
+				}
+			}
+
+			if (reader.TokenType != JsonTokenType.StartObject &&
+				reader.TokenType != JsonTokenType.EndObject)
+			{
+				return;
+			}
+
+			var depth = reader.CurrentDepth;
+			while (true)
+			{
+				if (!reader.Read())
+				{
+					throw new EndOfStreamException();
+				}
+				if (reader.CurrentDepth == depth)
+				{
+					return;
+				}
 			}
 		}
 		#endregion //Methods
