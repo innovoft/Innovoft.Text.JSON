@@ -181,6 +181,22 @@ namespace Innovoft.Text.JSON
 			}
 		}
 
+		public bool TryGetDecimal(ref Utf8JsonReader reader, out decimal value)
+		{
+			switch (reader.TokenType)
+			{
+			case JsonTokenType.String:
+				return Utf8Parser.TryParse(reader.ValueSpan, out value, out var consumed);
+
+			case JsonTokenType.Number:
+				return reader.TryGetDecimal(out value);
+
+			default:
+				value = default;
+				return false;
+			}
+		}
+
 		public bool TryGetDouble(ref Utf8JsonReader reader, out double value)
 		{
 			switch (reader.TokenType)
