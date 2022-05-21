@@ -48,6 +48,25 @@ namespace Innovoft.Text.JSON
 			}
 		}
 
+		public static float GetSingle(ref Utf8JsonReader reader)
+		{
+			switch (reader.TokenType)
+			{
+			case JsonTokenType.String:
+				if (!Utf8Parser.TryParse(reader.ValueSpan, out float value, out var consumed))
+				{
+					throw new FormatException();
+				}
+				return value;
+
+			case JsonTokenType.Number:
+				return reader.GetSingle();
+
+			default:
+				throw new FormatException();
+			}
+		}
+
 		public static short GetInt16(ref Utf8JsonReader reader)
 		{
 			switch (reader.TokenType)
