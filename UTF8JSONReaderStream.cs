@@ -71,6 +71,17 @@ namespace Innovoft.Text.JSON
 			return new Utf8JsonReader(new ReadOnlySpan<byte>(buffer, 0, count), count <= 0, new JsonReaderState());
 		}
 
+		public IAsyncResult BeginCreate(AsyncCallback? callback, object state)
+		{
+			return stream.BeginRead(buffer, 0, buffer.Length, callback, state);
+		}
+
+		public Utf8JsonReader EndCreate(IAsyncResult asyncResult)
+		{
+			count = stream.EndRead(asyncResult);
+			return new Utf8JsonReader(new ReadOnlySpan<byte>(buffer, 0, count), count <= 0, new JsonReaderState());
+		}
+
 		public bool Read(ref Utf8JsonReader reader)
 		{
 			if (reader.Read())
