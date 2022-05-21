@@ -12,7 +12,7 @@
 		<Authors>Steven Retz</Authors>
 		<Company>Innovoft</Company>
 		<Copyright>Copyright © Innovoft 2021</Copyright>
-		<Description></Description>
+		<Description>Instead of only passing a Utf8JsonReader also pass a UTF8JSONReaderStream and call public bool Read(ref Utf8JsonReader reader) which handle all the issues with reading from a stream.</Description>
 		<PackageProjectUrl>https://github.com/innovoft/Innovoft.Text.JSON</PackageProjectUrl>
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
     <ImplicitUsings>disable</ImplicitUsings>
