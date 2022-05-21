@@ -17,6 +17,7 @@
 		<PublishRepositoryUrl>true</PublishRepositoryUrl>
     <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
 	<Target Name="SetSourceRevisionId" BeforeTargets="InitializeSourceControlInformation" Condition="$(SourceRevisionId) == ''">
@@ -33,5 +34,12 @@
 			</AssemblyAttribute>
 		</ItemGroup>
 	</Target>
+
+	<ItemGroup>
+	  <None Update="README.md">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
+	</ItemGroup>
 
 </Project>
