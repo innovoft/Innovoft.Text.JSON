@@ -169,6 +169,22 @@ namespace Innovoft.Text.JSON
 			}
 		}
 
+		public static bool TryGetInt64(ref Utf8JsonReader reader, out long value)
+		{
+			switch (reader.TokenType)
+			{
+			case JsonTokenType.String:
+				return Utf8Parser.TryParse(reader.ValueSpan, out value, out var consumed);
+
+			case JsonTokenType.Number:
+				return reader.TryGetInt64(out value);
+
+			default:
+				value = default;
+				return false;
+			}
+		}
+
 		public static void Skip(ref Utf8JsonReader reader)
 		{
 			if (reader.TokenType == JsonTokenType.PropertyName)
