@@ -27,7 +27,7 @@ namespace Innovoft.Text.JSON
 		public UTF8JSONReaderStream(Stream stream, byte[] buffer, bool dispose)
 		{
 			this.stream = stream;
-			this.buffer= buffer;
+			this.buffer = buffer;
 			this.dispose = dispose;
 		}
 		#endregion //Constructors
