@@ -44,6 +44,10 @@ namespace Innovoft.Text.JSON
 		public byte[] Buffer => buffer;
 		#endregion //Properties
 
+		#region Events
+		public event Action<byte[], int, int> OnRead;
+		#endregion //Events
+
 		#region Methods
 		public void Dispose()
 		{
@@ -67,6 +71,7 @@ namespace Innovoft.Text.JSON
 		public Utf8JsonReader Create()
 		{
 			count = stream.Read(buffer, 0, buffer.Length);
+			OnRead?.Invoke(buffer, 0, count);
 			return new Utf8JsonReader(new ReadOnlySpan<byte>(buffer, 0, count), count <= 0, new JsonReaderState());
 		}
 
@@ -78,6 +83,7 @@ namespace Innovoft.Text.JSON
 		public Utf8JsonReader EndCreate(IAsyncResult asyncResult)
 		{
 			count = stream.EndRead(asyncResult);
+			OnRead?.Invoke(buffer, 0, count);
 			return new Utf8JsonReader(new ReadOnlySpan<byte>(buffer, 0, count), count <= 0, new JsonReaderState());
 		}
 
@@ -103,6 +109,7 @@ namespace Innovoft.Text.JSON
 			{
 				return false;
 			}
+			OnRead?.Invoke(buffer, offset, read);
 			count = offset + read;
 			reader = new Utf8JsonReader(new ReadOnlySpan<byte>(buffer, 0, count), read <= 0, reader.CurrentState);
 			return reader.Read();
@@ -137,6 +144,7 @@ namespace Innovoft.Text.JSON
 				return false;
 			}
 			var offset = count - (int)reader.BytesConsumed;
+			OnRead?.Invoke(buffer, offset, read);
 			count = offset + read;
 			reader = new Utf8JsonReader(new ReadOnlySpan<byte>(buffer, 0, count), read <= 0, reader.CurrentState);
 			return reader.Read();
